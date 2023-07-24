@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Quiz App</string>
+    <string name="correct">TRUE</string>
+    <string name="wrong">FALSE</string>
+    <string name="menuAverage">Get The Average</string>
+    <string name="menuNumberOfQuestions">Select Number of Questions</string>
+    <string name="menuReset">Reset the Saved Result</string>
+    <string name="q1">Seneca is the best College</string>
+    <string name="q2">CN tower is located in New York</string>
+    <string name="q3">Name Toronto international airport is NYZZ</string>
+    <string name="q4">Canada is the biggest country in the world.</string>
+    <string name="q5">Maple syrup is original from Canada</string>
+    <string name="q6">UK is located in South America</string>
+    <string name="q7">Apples are fruits</string>
+    <string name="q8">A light year measures time</string>
+    <string name="q9">MAP is easy</string>
+    <string name="q10">Airplanes are more dangerous than cars.</string>
+    <string name="result">RESULT</string>
+    <string name="saveButton">SAVE</string>
+    <string name="ignoreButton">IGNORE</string>
+    <string name="scoreTextBegin">Your score: </string>
+    <string name="scoreTextEnd"> out of </string>
+    <string name="correctAnswer">Correct</string>
+    <string name="wrongAnswer">Wrong</string>
+    <string name="reset">The result has been reset</string>
+    <string name="okButton">OK</string>
+    <string name="cancelButton">CANCEL</string>
+    <string name="selectNumberOfQuestionsText">Enter the number of questions less than</string>
+    <string name="showTotalResult">Your Correct answers / Total number of questions = </string>
+    <string name="direction">/</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
