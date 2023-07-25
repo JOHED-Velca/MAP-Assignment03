@@ -29,22 +29,35 @@ public class Question_fragment extends Fragment {
 
 
     public static Question_fragment newInstance(int question, int backgroundColor, boolean answer) {
+
         Question_fragment fragment = new Question_fragment();
+
         Bundle args = new Bundle();
+
         args.putInt(ARG_PARAM1, question);
+
         args.putInt(ARG_PARAM2, backgroundColor);
+
         args.putBoolean(ARG_PARAM3, answer);
+
         fragment.setArguments(args);
+
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
+
             question = getArguments().getInt(ARG_PARAM1);
+
             backgroundColor = getArguments().getInt(ARG_PARAM2);
+
             answer = getArguments().getBoolean(ARG_PARAM3);
+
         }
     }
 
@@ -55,10 +68,13 @@ public class Question_fragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_question_fragment, container, false);
 
         TextView textView = view.findViewById(R.id.fragmentTextView);
+
         textView.setText(question);
 
         view.setBackgroundColor(getResources().getColor(backgroundColor));
 
         return view;
+
     }
+
 }

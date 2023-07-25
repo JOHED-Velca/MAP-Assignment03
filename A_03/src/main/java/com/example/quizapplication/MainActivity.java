@@ -42,28 +42,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+
         trueButton = findViewById(R.id.buttonTrue);
+
         falseButton = findViewById(R.id.buttonFalse);
+
         progressBar = findViewById(R.id.progressBar);
+
         fileStoreManager = ((MyAppManager)getApplication()).fileStoreManager;
+
         numberOfBankQuestions = ((MyAppManager)getApplication()).bankQuestions.size();
+
         builder = new AlertDialog.Builder(this);
+
         infoBuilder = new AlertDialog.Builder(this);
+
         trueButton.setOnClickListener(this);
+
         falseButton.setOnClickListener(this);
+
         if(savedInstanceState != null)
         {
             numberOfCorrectAnswers = savedInstanceState.getInt("correctAnswers");
+
             counter = savedInstanceState.getInt("counter");
+
             totalQuestions = savedInstanceState.getInt("totalQuestions");
+
             quiz = ((MyAppManager)getApplication()).manager.fragmentManager;
+
             if(counter < totalQuestions)
             {
                 fm.beginTransaction().replace(R.id.fragmentContainer, quiz.get(counter)).commit();
+
                 progressBar.setMax(totalQuestions);
+
                 progressBar.setProgress(counter);
+
             }
             else
             {
@@ -76,12 +95,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else
         {
             int defaultNumberOfQuestions = ((MyAppManager)getApplication()).bankQuestions.size();
+
             quiz = createQuiz(defaultNumberOfQuestions);
+
             counter = 0;
+
             numberOfCorrectAnswers = 0;
+
             totalQuestions = defaultNumberOfQuestions;
+
             fm.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+
             fm.beginTransaction().add(R.id.fragmentContainer, quiz.get(0)).commit();
+
         }
     }
 
@@ -89,9 +115,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
+
         super.onSaveInstanceState(outState);
+
         outState.putInt("counter",counter);
+
         outState.putInt("correctAnswers",numberOfCorrectAnswers);
+
         outState.putInt("totalQuestions", totalQuestions);
 
 
@@ -99,39 +129,60 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+
         super.onRestoreInstanceState(savedInstanceState);
+
         numberOfCorrectAnswers = savedInstanceState.getInt("correctAnswers");
+
         counter = savedInstanceState.getInt("counter");
+
         totalQuestions = savedInstanceState.getInt("totalQuestions");
 
     }
 
-    //option menu
+    //Menu of options
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         MenuInflater inflater = getMenuInflater();
+
         inflater.inflate(R.menu.menu,menu);
+
         return true;
+
     }
 
     //set click listener for menu items
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
         super.onOptionsItemSelected(item);
+
         int id = item.getItemId();
+
         if (id == R.id.menuAverage) {
+
             showAlertDialogForTotalResult();
+
         } else if (id == R.id.menuNumberOfQuestions) {
+
             SelectNumberOfQuestionsFragment newNumberOfQuestions =
                     SelectNumberOfQuestionsFragment.newInstance(numberOfBankQuestions);
+
             newNumberOfQuestions.handler = this;
+
             newNumberOfQuestions.show(fm, SelectNumberOfQuestionsFragment.Tag);
+
         } else if (id == R.id.menuReset) {
+
             fileStoreManager.deleteAllResults(MainActivity.this);
+
             Toast.makeText(this, getResources().getString(R.string.reset), Toast.LENGTH_SHORT).show();
+
         }
 
         return true;
+
     }
 
 
@@ -141,24 +192,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
 
         int id = view.getId();
+
         if (id == R.id.buttonTrue) {
+
             if (quiz.get(counter).answer) {
+
                 numberOfCorrectAnswers++;
+
                 counter++;
+
                 Toast.makeText(this, getResources().getString(R.string.correctAnswer), Toast.LENGTH_SHORT).show();
+
             } else {
+
                 counter++;
+
                 Toast.makeText(this, getResources().getString(R.string.wrongAnswer), Toast.LENGTH_SHORT).show();
+
             }
+
         } else if (id == R.id.buttonFalse) {
+
             if (!quiz.get(counter).answer) {
+
                 numberOfCorrectAnswers++;
+
                 counter++;
+
                 Toast.makeText(this, getResources().getString(R.string.correctAnswer), Toast.LENGTH_SHORT).show();
+
             } else {
+
                 counter++;
+
                 Toast.makeText(this, getResources().getString(R.string.wrongAnswer), Toast.LENGTH_SHORT).show();
+
             }
+
         }
 
         //setting progress bar
@@ -173,6 +243,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         {
             showAlertDialogForQuizResult();
         }
+
     }
 
     //create Quiz
@@ -180,19 +251,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
 
         progressBar.setMax(numberOfQuestions);
+
         progressBar.setProgress(0);
 
 
         Random random = new Random();
+
         int number;
 
         ArrayList<Integer> questionNumbers = new ArrayList<>(numberOfQuestions);
+
         ArrayList<Question> questions = ((MyAppManager)getApplication()).bankQuestions;
+
         ArrayList<Integer> colors = ((MyAppManager)getApplication()).bankColors;
+
         int numberOfBankQuestions = ((MyAppManager)getApplication()).bankQuestions.size();
+
         int numberOfColors = ((MyAppManager)getApplication()).bankColors.size();
+
         //array list for picking the random number for questions
         ArrayList<Integer> rangeOfQuestions = new ArrayList<>(numberOfBankQuestions);
+
         for(int i = 0 ; i < numberOfBankQuestions ; i++)
         {
             rangeOfQuestions.add(i);
@@ -201,8 +280,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         for(int i = 0; i < numberOfQuestions; i++)
         {
             number = random.nextInt(rangeOfQuestions.size());
+
             questionNumbers.add(rangeOfQuestions.get(number));
+
             rangeOfQuestions.remove(number);
+
         }
 
         ((MyAppManager)getApplication()).manager.fragmentManager =
@@ -227,6 +309,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void showAlertDialogForTotalResult()
     {
         ArrayList<Integer> result = fileStoreManager.readResultFromFile(MainActivity.this);
+
         infoBuilder.setMessage(getResources().getString(R.string.showTotalResult) +
                 result.get(0) + getResources().getString(R.string.direction) + result.get(1)).setCancelable(true).show();
     }
@@ -243,14 +326,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         , new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+
                                 ArrayList<Integer> result = fileStoreManager.readResultFromFile(MainActivity.this);
+
                                 int newCorrectAnswers = result.get(0) + numberOfCorrectAnswers;
+
                                 int newTotalQuestions = result.get(1) + totalQuestions;
+
                                 fileStoreManager.writeNewResultToFile(MainActivity.this,newCorrectAnswers,newTotalQuestions);
+
                                 counter = 0;
+
                                 numberOfCorrectAnswers = 0;
+
                                 quiz = createQuiz(totalQuestions);
+
                                 fm.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+
                                 fm.beginTransaction().replace(R.id.fragmentContainer, quiz.get(0)).commit();
 
                             }
@@ -259,12 +351,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+
                                 counter = 0;
+
                                 numberOfCorrectAnswers = 0;
+
                                 quiz = createQuiz(totalQuestions);
+
                                 fm.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+
                                 fm.beginTransaction().replace(R.id.fragmentContainer, quiz.get(0)).commit();
+
                             }
+
                         }).show();
     }
 
@@ -275,10 +374,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(number != -1)
         {
             quiz = createQuiz(number);
+
             numberOfCorrectAnswers = 0;
+
             totalQuestions = number;
+
             counter = 0;
+
             fm.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+
             fm.beginTransaction().replace(R.id.fragmentContainer, quiz.get(0)).commit();
         }
         else
